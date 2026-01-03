@@ -5,6 +5,7 @@ main {
     width: 100%;
     max-width: 900px;
     margin-inline: auto;
+    overflow: visible;
 }
 
 main button {
