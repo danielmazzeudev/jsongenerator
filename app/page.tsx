@@ -101,7 +101,7 @@ export default function Home() {
                                 <span>Processing...</span>
                             </>
                         ) : (
-                            "AI Generate Json"
+                            "AI Generate"
                         )}
                     </button>
                 </form>
@@ -120,11 +120,11 @@ export default function Home() {
                                 ) : (
                                     <>
                                         <Copy />
-                                        <span>Copy Json</span>
+                                        <span>Copy</span>
                                     </>
                                 )}
                             </button>
-                            <button type="button" onClick={handleDownload}><Download size={16} /> Download .json</button>
+                            <button type="button" onClick={handleDownload}><Download size={16} /> Download</button>
                         </div>
                     </section>
                 )}
