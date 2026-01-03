@@ -1,6 +1,6 @@
 div.grid  {
     display: grid;
-    gap: 15px;
+    gap: 30px;
     width: 100%;
     max-width: 900px;
     margin: 30px auto;
