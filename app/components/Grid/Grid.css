@@ -24,8 +24,8 @@ div.grid > div > svg {
     height: auto;
     padding: 15px;
     border-radius: 8px;
-    color: #fff;
-    background-color: #303030;
+    color: #303030;
+    background-color: #ccc;
 }
 
 div.grid > div > h3 {

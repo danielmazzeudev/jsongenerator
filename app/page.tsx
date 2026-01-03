@@ -111,7 +111,10 @@ export default function Home() {
                                 <span>Processing...</span>
                             </>
                         ) : (
-                            "AI Generate"
+                            <>
+                                <WandSparkles style={{ animation: "none"}} />
+                                <span>AI Generate</span>
+                            </>
                         )}
                     </button>
                 </form>
