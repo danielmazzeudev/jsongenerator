@@ -151,7 +151,7 @@ export default function Home() {
                     <h3>Generate</h3>
                     <p>Our AI processes your instructions and builds a structured JSON.</p>
                 </div>
-                <div>
+                <div style={{gridColumn: "span 2"}}>
                     <ClipboardCheck />
                     <h3>Copy & Use</h3>
                     <p>Copy the result with one click and paste it directly into your project.</p>
