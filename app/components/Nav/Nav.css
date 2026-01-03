@@ -10,10 +10,9 @@ nav {
 }
 
 nav > h1 {
-    font-size: 28px;
+    font-size: 24px;
     text-transform: uppercase;
     font-weight: 900;
-    letter-spacing: 1px;
     margin-bottom: 5px;
 }
 
