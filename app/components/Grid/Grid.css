@@ -42,5 +42,5 @@ div.grid > div > p {
 }
 
 @media (max-width: 768px) {
-    div.grid { grid-template-columns: repeat(2, 1fr) !important; }
+    div.grid { grid-template-columns: 1fr !important; }
 }
