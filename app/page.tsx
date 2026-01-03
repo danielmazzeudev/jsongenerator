@@ -95,7 +95,7 @@ export default function Home() {
         <>
             <Nav>
                 <h1>AI Json Generator</h1>
-                <p>Fast, flawless <strong>JSON generation</strong>. Just describe what you need and let the <strong>AI</strong> handle the rest.</p>
+                <p>Fast, free, flawless <strong>JSON generation</strong>. Just describe what you need and let the <strong>AI</strong> handle the rest.</p>
             </Nav>
             <Main>
                 <form onSubmit={handleSubmit}>
