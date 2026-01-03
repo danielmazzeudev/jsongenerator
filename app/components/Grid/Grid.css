@@ -3,7 +3,7 @@ div.grid  {
     gap: 15px;
     width: 100%;
     max-width: 900px;
-    margin: 15px auto;
+    margin: 30px auto;
 }
 
 div.grid > div {
@@ -15,7 +15,8 @@ div.grid > div {
     width: 100%;
     padding: 30px;
     border-radius: 15px;
-    background-color: #ddd;
+    border: 2px dashed #ddd;
+    background-color: #eee;
 }
 
 div.grid > div > svg {
