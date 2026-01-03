@@ -94,7 +94,7 @@ export default function Home() {
     return (
         <>
             <Nav>
-                <h1>AI Json Generator</h1>
+                <h1>AI <span>Json</span> Generator</h1>
                 <p>Fast, free, flawless <strong>JSON generation</strong>. Just describe what you need and let the <strong>AI</strong> handle the rest.</p>
             </Nav>
             <Main>

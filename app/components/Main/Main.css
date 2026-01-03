@@ -24,7 +24,7 @@ main button {
 main button svg {
     width: 16px;
     height: auto;
-    color: #ff0051;
+    color: #84e5f0;
 }
 
 main button.loading > svg {

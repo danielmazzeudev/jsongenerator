@@ -17,6 +17,10 @@ nav > h1 {
     color: #303030;
 }
 
+nav > h1 > span {
+    color: #84e5f0;
+}
+
 nav > p {
     max-width: 400px;
     font-size: 14px;
