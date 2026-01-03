@@ -124,9 +124,7 @@ export default function Home() {
                                     </>
                                 )}
                             </button>
-                            <button type="button" onClick={handleDownload}>
-                                <Download size={16} /> Download .json
-                            </button>
+                            <button type="button" onClick={handleDownload}><Download size={16} /> Download .json</button>
                         </div>
                     </section>
                 )}
