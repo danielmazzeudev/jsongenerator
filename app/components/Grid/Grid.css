@@ -15,7 +15,7 @@ div.grid > div {
     width: 100%;
     padding: 30px;
     border-radius: 15px;
-    border: 2px dashed #ddd;
+    background-color: #ddd;
 }
 
 div.grid > div > svg {
@@ -23,8 +23,8 @@ div.grid > div > svg {
     height: auto;
     padding: 15px;
     border-radius: 8px;
-    color: #000;
-    background-color: #ddd;
+    color: #fff;
+    background-color: #303030;
 }
 
 div.grid > div > h3 {
