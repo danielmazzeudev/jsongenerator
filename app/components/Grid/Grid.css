@@ -20,11 +20,12 @@ div.grid > div {
 }
 
 div.grid > div > svg {
-    width: 43px;
+    width: 50px;
     height: auto;
-    padding: 10px;
+    padding: 15px;
     border-radius: 8px;
-    background-color: #eee;
+    color: #fff;
+    background-color: #222;
 }
 
 div.grid > div > h3 {
