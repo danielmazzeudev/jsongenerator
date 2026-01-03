@@ -158,10 +158,13 @@ export default function Home() {
                 </div>
             </Grid>
 
-            <Grid columns={1}>
+            <Grid columns={2}>
                 <div>
-                    <h3>What is JSON and Why Use an AI Generator?</h3>
+                    <h3>What is JSON</h3>
                     <p><strong>JSON (JavaScript Object Notation)</strong> is the standard lightweight format for storing and transporting data. It is most commonly used when data is sent from a server to a web page or mobile app. Because it is text-based and structured, it is easy for humans to read and machines to parse.</p>
+                </div>
+                <div>
+                    <h3>Why Use an AI Generator?</h3>
                     <p>Manually creating complex JSON structures can be tedious and prone to syntax errors like missing commas or unmatched brackets. Our <strong>AI JSON Generator</strong> simplifies this process. Instead of writing code, you describe the data you need in plain English such as a list of 5 fictional planets with their diameter and population and our AI instantly builds a valid, formatted JSON file for you.</p>
                 </div>
             </Grid>
