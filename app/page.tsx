@@ -144,7 +144,7 @@ export default function Home() {
                 <div>
                     <PencilLine />
                     <h3>Describe</h3>
-                    <p>Write what kind of data you need in plain English or any language.</p>
+                    <p>Write what kind of data you need in plain english or any language.</p>
                 </div>
                 <div>
                     <Sparkles />
