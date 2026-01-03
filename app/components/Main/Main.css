@@ -62,6 +62,6 @@ main > form > span {
     border-radius: 8px;
     font-size: 14px;
     font-weight: 500;
-    color: red;
-    background-color: #222;
+    color: #fff;
+    background-color: #ff0051;
 }
