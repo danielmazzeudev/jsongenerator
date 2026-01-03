@@ -39,7 +39,9 @@ main > section {
     width: 100%;
     padding: 15px;
     border-radius: 15px;
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    border: 1px solid #ddd;
+    background-color: #303030;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 
 main > form > textarea {
@@ -48,8 +50,10 @@ main > form > textarea {
     height: 100px;
     resize: none;
     border-radius: 8px;
-    border: 1px solid #ddd;
+    border: none;
     font-size: 14px;
+    color: #fff;
+    background-color: #222;
 }
 
 main > form > span {
