@@ -114,6 +114,7 @@ export default function Home() {
                     <p>Copy the result with one click and paste it directly into your project.</p>
                 </div>
             </Grid>
+            
             <Footer>
                 <small>Created and developed by Daniel Mazzeu<br/>All rights reserved {currentYear}.</small>
             </Footer>
