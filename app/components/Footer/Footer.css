@@ -3,9 +3,25 @@ footer {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 15px;
     width: 100%;
     max-width: 900px;
     margin: 30px auto;
+}
+
+footer > div {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+footer > div > a {
+    font-size: 14px;
+    color: #303030;
+}
+
+footer > div > a:hover {
+    text-decoration: underline;
 }
 
 footer > small {

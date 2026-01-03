@@ -157,6 +157,10 @@ export default function Home() {
             </Grid>
 
             <Footer>
+                <div>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of use</a>
+                </div>
                 <small>Created and developed by Daniel Mazzeu<br/>All rights reserved {currentYear}.</small>
             </Footer>
         </>

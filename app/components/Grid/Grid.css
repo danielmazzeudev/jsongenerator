@@ -13,7 +13,7 @@ div.grid > div {
     justify-content: center;
     gap: 10px;
     width: 100%;
-    padding: 50px 30px;
+    padding: 50px;
     border-radius: 15px;
     background-color: #ddd;
 }
@@ -32,11 +32,13 @@ div.grid > div > h3 {
     font-weight: 700;
     text-transform: uppercase;
     text-align: center;
+    color: #303030;
 }
 
 div.grid > div > p {
     font-size: 14px;
     text-align: center;
+    color: #303030;
 }
 
 @media (max-width: 768px) {
