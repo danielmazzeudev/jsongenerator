@@ -1,0 +1,43 @@
+div.grid  {
+    display: grid;
+    gap: 15px;
+    width: 100%;
+    max-width: 900px;
+    margin: 30px auto;
+}
+
+div.grid > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 30px;
+    border-radius: 15px;
+    background-color: #fff;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+div.grid > div > svg {
+    width: 43px;
+    height: auto;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #eee;
+}
+
+div.grid > div > h3 {
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+}
+
+div.grid > div > p {
+    font-size: 14px;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    div.grid { grid-template-columns: repeat(2, 1fr) !important; }
+}

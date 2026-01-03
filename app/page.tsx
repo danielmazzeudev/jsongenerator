@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Loader } from "lucide-react";
+import { ClipboardCheck, Loader, PencilLine, Sparkles } from "lucide-react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Nav } from "./components/Nav/Nav";
 import { Main } from "./components/Main/Main";
+import { Grid } from "./components/Grid/Grid";
 import { Footer } from "./components/Footer/Footer";
 
 export default function Home() {
@@ -95,6 +96,24 @@ export default function Home() {
                     </section>
                 )}
             </Main>
+
+            <Grid columns={3}>
+                <div>
+                    <PencilLine size={24} />
+                    <h3>Describe</h3>
+                    <p>Write what kind of data you need in plain English or any language.</p>
+                </div>
+                <div>
+                    <Sparkles size={24} />
+                    <h3>Generate</h3>
+                    <p>Our AI processes your instructions and builds a structured JSON.</p>
+                </div>
+                <div>
+                    <ClipboardCheck size={24} />
+                    <h3>Copy & Use</h3>
+                    <p>Copy the result with one click and paste it directly into your project.</p>
+                </div>
+            </Grid>
             <Footer>
                 <small>Created and developed by Daniel Mazzeu<br/>All rights reserved {currentYear}.</small>
             </Footer>
