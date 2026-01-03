@@ -1,6 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css";
+
+export const viewport: Viewport = {
+    colorScheme: 'light',
+};
 
 export const metadata: Metadata = {
     title: "AI JSON Generator",
@@ -17,6 +21,22 @@ export const metadata: Metadata = {
         "API mocking",
         "Next.js tool"
     ],
+    authors: [{ name: "Daniel Mazzeu" }],
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: { 
+            index: true,
+            follow: true,
+            'max-video-preview': -1,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+        },
+    },
+    icons: { 
+        icon: "/favicon.ico",
+        shortcut: "/favicon.ico",
+    },
 };
 
 export default function RootLayout({
@@ -25,8 +45,8 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
-            <body>
+        <html lang="en" style={{ colorScheme: 'light' }}>
+            <body suppressHydrationWarning={true}>
                 <Analytics/>
                 {children}
             </body>
