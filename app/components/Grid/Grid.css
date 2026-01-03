@@ -15,16 +15,15 @@ div.grid > div {
     width: 100%;
     padding: 30px;
     border-radius: 15px;
-    border: 2px dashed #ddd;
-    background-color: #eee;
+    background-color: #ddd;
 }
 
 div.grid > div > svg {
     width: 50px;
     height: auto;
     padding: 15px;
-    border-radius: 8px;
-    color: #303030;
+    border-radius: 10px;
+    color: #000;
     background-color: #ccc;
 }
 
