@@ -48,6 +48,16 @@ export default function Home() {
         URL.revokeObjectURL(url);
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === "Enter" && !e.shiftKey && !loading) {
+            e.preventDefault();
+            const form = e.currentTarget.form;
+            if (form) {
+                form.requestSubmit(); 
+            }
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError("");
@@ -89,7 +99,7 @@ export default function Home() {
             </Nav>
             <Main>
                 <form onSubmit={handleSubmit}>
-                    <textarea placeholder="Enter your instructions here..." value={textarea} onChange={(e) => {
+                    <textarea placeholder="Enter your instructions here..." value={textarea} onKeyDown={handleKeyDown} onChange={(e) => {
                         setTextarea(e.target.value);
                         if (error) setError("");
                     }}/>
