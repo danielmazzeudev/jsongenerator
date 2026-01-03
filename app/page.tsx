@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Loader } from "lucide-react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Nav } from "./components/Nav/Nav";
@@ -75,7 +76,14 @@ export default function Home() {
                     }}/>
                     {error && <span>{error}</span>}
                     <button type="submit" disabled={loading}>
-                        {loading ? "Processing..." : "AI Generate Json"}
+                        {loading ? (
+                            <>
+                                <Loader className="animate-spin" size={18} />
+                                <span>Processing...</span>
+                            </>
+                        ) : (
+                            "AI Generate Json"
+                        )}
                     </button>
                 </form>
                 {result && !error && (

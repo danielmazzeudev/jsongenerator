@@ -8,6 +8,10 @@ main {
 }
 
 main button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
     width: fit-content;
     padding: 10px 15px;
     border-radius: 8px;
@@ -15,6 +19,16 @@ main button {
     font-size: 14px;
     color: #fff;
     background-color: #222;
+}
+
+main button > svg {
+    color: lightblue;
+    animation: loading 2s linear infinite;
+}
+
+@keyframes loading {
+    0% { transform: rotate(0deg) }
+    100% { transform: rotate(360deg) }
 }
 
 main > form,
