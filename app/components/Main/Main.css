@@ -21,8 +21,13 @@ main button {
     background-color: #222;
 }
 
-main button > svg {
-    color: lightblue;
+main button svg {
+    width: 16px;
+    height: auto;
+    color: #ff0051;
+}
+
+main button.loading > svg {
     animation: loading 2s linear infinite;
 }
 
@@ -62,6 +67,6 @@ main > form > span {
     border-radius: 8px;
     font-size: 14px;
     font-weight: 500;
-    color: #000;
-    background-color: #ff0051;
+    color: #ff0051;
+    background-color: #222;
 }

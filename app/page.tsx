@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ClipboardCheck, Loader, PencilLine, Sparkles } from "lucide-react";
+import { ClipboardCheck, Copy, CopyCheck, Download, Loader, PencilLine, Sparkles } from "lucide-react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Nav } from "./components/Nav/Nav";
@@ -14,6 +14,7 @@ export default function Home() {
     const [result, setResult] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [copied, setCopied] = useState(false);
     const currentYear = new Date().getFullYear();
 
     const formatJson = (content: object | string): string => {
@@ -27,7 +28,24 @@ export default function Home() {
 
     const handleCopy = () => {
         navigator.clipboard.writeText(formatJson(result));
-        alert("Copied to clipboard!");
+        setCopied(true);
+        
+        setTimeout(() => {
+            setCopied(false);
+        }, 3000);
+    };
+
+    const handleDownload = () => {
+        const jsonString = formatJson(result);
+        const blob = new Blob([jsonString], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "generated.json";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -76,10 +94,10 @@ export default function Home() {
                         if (error) setError("");
                     }}/>
                     {error && <span>{error}</span>}
-                    <button type="submit" disabled={loading}>
+                    <button type="submit" className="loading" disabled={loading}>
                         {loading ? (
                             <>
-                                <Loader className="animate-spin" size={18} />
+                                <Loader />
                                 <span>Processing...</span>
                             </>
                         ) : (
@@ -92,7 +110,24 @@ export default function Home() {
                         <SyntaxHighlighter language="json" style={vscDarkPlus} showLineNumbers={true} customStyle={{ margin: 0, tabSize: 4, fontSize: "16px", borderRadius: "10px", padding: "15px", backgroundColor: "#222", maxHeight: "300px", overflow: "auto" }}>
                             {formatJson(result)}
                         </SyntaxHighlighter>
-                        <button type="button" onClick={handleCopy} className="copy-button">Copy Json</button>
+                        <div style={{display: "flex", gap: "10px"}}>
+                            <button type="button" onClick={handleCopy}>
+                                {copied ? (
+                                    <>
+                                        <CopyCheck />
+                                        <span>Copied!</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Copy />
+                                        <span>Copy Json</span>
+                                    </>
+                                )}
+                            </button>
+                            <button type="button" onClick={handleDownload}>
+                                <Download size={16} /> Download .json
+                            </button>
+                        </div>
                     </section>
                 )}
             </Main>
@@ -114,7 +149,7 @@ export default function Home() {
                     <p>Copy the result with one click and paste it directly into your project.</p>
                 </div>
             </Grid>
-            
+
             <Footer>
                 <small>Created and developed by Daniel Mazzeu<br/>All rights reserved {currentYear}.</small>
             </Footer>
