@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ClipboardCheck, Copy, CopyCheck, Download, Loader, PencilLine, Sparkles } from "lucide-react";
+import { ClipboardCheck, Copy, CopyCheck, Download, Loader, PencilLine, WandSparkles } from "lucide-react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Nav } from "./components/Nav/Nav";
@@ -147,7 +147,7 @@ export default function Home() {
                     <p>Write what kind of data you need in plain english or any language.</p>
                 </div>
                 <div>
-                    <Sparkles />
+                    <WandSparkles  />
                     <h3>Generate</h3>
                     <p>Our AI processes your instructions and builds a structured JSON.</p>
                 </div>
