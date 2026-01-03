@@ -132,19 +132,27 @@ export default function Home() {
 
             <Grid columns={3}>
                 <div>
-                    <PencilLine size={24} />
+                    <PencilLine />
                     <h3>Describe</h3>
                     <p>Write what kind of data you need in plain English or any language.</p>
                 </div>
                 <div>
-                    <Sparkles size={24} />
+                    <Sparkles />
                     <h3>Generate</h3>
                     <p>Our AI processes your instructions and builds a structured JSON.</p>
                 </div>
                 <div>
-                    <ClipboardCheck size={24} />
+                    <ClipboardCheck />
                     <h3>Copy & Use</h3>
                     <p>Copy the result with one click and paste it directly into your project.</p>
+                </div>
+            </Grid>
+
+            <Grid columns={1}>
+                <div>
+                    <PencilLine />
+                    <h3>Describe</h3>
+                    <p>Write what kind of data you need in plain English or any language.</p>
                 </div>
             </Grid>
 
