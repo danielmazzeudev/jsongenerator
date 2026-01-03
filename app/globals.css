@@ -23,8 +23,24 @@ body { overflow-x: hidden !important; }
 html { scroll-behavior: smooth; }
 
 body { 
+    position: relative;
     padding: 0 15px;
     background-color: #f0f0f0;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: url("/json.png");
+    background-position: center center;
+    background-repeat: repeat;
+    background-size: 150px;
+    opacity: 0.4; 
 }
 
 button { cursor: pointer; }
