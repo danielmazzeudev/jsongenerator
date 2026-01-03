@@ -1,0 +1,17 @@
+footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    height: 150px;
+    margin-inline: auto;
+}
+
+footer > small {
+    max-width: 400px;
+    font-size: 12px;
+    text-align: center;
+    color: #888;
+}

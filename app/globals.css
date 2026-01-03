@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    text-decoration: none;
+    font-family: "Source Sans 3", sans-serif;
+    transition: all 0.3s ease-in-out;
+    text-rendering: optimizeLegibility;
+    font-optical-sizing: auto;
+    image-rendering: optimizeQuality;
+    list-style: none;
+}
+
+html,
+body { overflow-x: hidden !important; }
+
+html { scroll-behavior: smooth; }
+
+body { 
+    height: 100vh;
+    padding: 0 15px;
+    background-color: #f0f0f0;
+}
+
+button { cursor: pointer; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #ddd; }
+::-webkit-scrollbar-thumb { background: #999; border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: #000; }
+aside::-webkit-scrollbar { width: 6px; }

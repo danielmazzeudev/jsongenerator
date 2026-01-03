@@ -1,0 +1,25 @@
+nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    height: 150px;
+    margin-inline: auto;
+}
+
+nav > h1 {
+    font-size: 28px;
+    text-transform: uppercase;
+    font-weight: 900;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+nav > p {
+    max-width: 400px;
+    font-size: 14px;
+    text-align: center;
+    color: #666;
+}
