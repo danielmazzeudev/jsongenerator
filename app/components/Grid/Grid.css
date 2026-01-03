@@ -13,7 +13,7 @@ div.grid > div {
     justify-content: center;
     gap: 10px;
     width: 100%;
-    padding: 30px;
+    padding: 50px 30px;
     border-radius: 15px;
     background-color: #ddd;
 }
@@ -28,8 +28,9 @@ div.grid > div > svg {
 }
 
 div.grid > div > h3 {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
+    text-transform: uppercase;
     text-align: center;
 }
 

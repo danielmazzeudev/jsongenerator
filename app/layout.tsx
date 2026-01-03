@@ -3,7 +3,7 @@ import { Analytics } from "@vercel/analytics/next"
 import "./globals.css";
 
 export const metadata: Metadata = {
-    title: "AI JSON Generator | Instant Data Structure Creation",
+    title: "AI JSON Generator",
     description: "Generate complex JSON structures instantly using AI. The ultimate tool for developers to create mock data, schemas, and custom data structures with natural language.",
     keywords: [
         "AI JSON Generator",
