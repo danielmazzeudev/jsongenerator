@@ -156,7 +156,7 @@ export default function Home() {
                 </div>
                 <div>
                     <ClipboardCheck />
-                    <h3>Copy & Use</h3>
+                    <h3>Copy or Download</h3>
                     <p>Copy the result with one click and paste it directly into your project.</p>
                 </div>
             </Grid>
