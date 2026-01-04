@@ -52,6 +52,6 @@ button { cursor: pointer; }
 
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #999; border-radius: 8px; }
-::-webkit-scrollbar-thumb:hover { background: #222; }
+::-webkit-scrollbar-thumb { background: var(--theme); border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: var(--theme); }
 aside::-webkit-scrollbar { width: 6px; }
