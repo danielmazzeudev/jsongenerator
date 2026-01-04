@@ -63,7 +63,7 @@ export default function Home() {
         setError("");
 
         if (!textarea.trim()) {
-            setError("Please enter your instructions before generating.");
+            setError("Please enter your instructions.");
             return;
         }
 
