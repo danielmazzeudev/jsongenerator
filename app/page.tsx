@@ -97,9 +97,19 @@ export default function Home() {
                 <h1>AI <span>&#123;Json&#125;</span> Generator</h1>
                 <p>Fast, free, flawless <strong>JSON generation</strong>. Just describe what you need and let the <strong>AI</strong> handle the rest.</p>
             </Nav>
+
+            <Grid columns={2}>
+                <div>
+                    <h3>323 Acess</h3>
+                </div>
+                <div>
+                    <h3>333 Downloiads</h3>
+                </div>
+            </Grid>
+
             <Main>
                 <form onSubmit={handleSubmit}>
-                    <textarea placeholder="Enter your instructions here..." value={textarea} onKeyDown={handleKeyDown} onChange={(e) => {
+                    <textarea placeholder="Enter your instructions here. (Press Shift + Enter to break line)" value={textarea} onKeyDown={handleKeyDown} onChange={(e) => {
                         setTextarea(e.target.value);
                         if (error) setError("");
                     }}/>
