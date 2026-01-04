@@ -24,7 +24,7 @@ main button {
 main button svg {
     width: 16px;
     height: auto;
-    color: #84e5f0;
+    color: var(--theme);
 }
 
 main button.loading > svg {
@@ -67,6 +67,6 @@ main > form > span {
     border-radius: 8px;
     font-size: 14px;
     font-weight: 500;
-    color: #ff0051;
+    color: var(--theme);
     background-color: #222;
 }
