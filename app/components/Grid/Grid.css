@@ -1,6 +1,6 @@
 div.grid  {
     display: grid;
-    gap: 0;
+    gap: 70px;
     width: 100%;
     max-width: 900px;
     margin: 50px auto;
@@ -39,6 +39,7 @@ div.grid > div > p {
 }
 
 @media (max-width: 768px) {
+    div.grid { gap: 0; }
     div.grid > div { padding: 15px 10px; }
     div.grid > div > svg { width: 50px; }
     div.grid > div > h3 { font-size: 14px; }
