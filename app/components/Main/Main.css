@@ -73,7 +73,7 @@ main > form > span {
 
 @media (max-width: 768px) {
     main button svg { width: 14px; }
-    main button { font-size: 12px; }
-    main > form > textarea { font-size: 12px; }
+    main button,
+    main > form > textarea,
     main > form > span { font-size: 12px; }
 }
