@@ -121,7 +121,7 @@ export default function Home() {
                 </form>
                 {result && !error && (
                     <section>
-                        <SyntaxHighlighter language="json" style={vscDarkPlus} showLineNumbers={true} customStyle={{ margin: 0, tabSize: 4, fontSize: "16px", borderRadius: "10px", padding: "15px", backgroundColor: "var(--input-bg)", maxHeight: "300px", overflow: "auto" }}>
+                        <SyntaxHighlighter language="json" style={vscDarkPlus} showLineNumbers={true} customStyle={{ margin: 0, tabSize: 4, fontSize: "16px", borderRadius: "10px", padding: "15px", backgroundColor: "#222", maxHeight: "300px", overflow: "auto" }}>
                             {formatJson(result)}
                         </SyntaxHighlighter>
                         <div style={{display: "flex", gap: "10px"}}>
