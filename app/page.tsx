@@ -100,7 +100,7 @@ export default function Home() {
 
             <Main>
                 <form onSubmit={handleSubmit}>
-                    <textarea placeholder="Enter your instructions here. (On Desktop press Shift + Enter to break line)" value={textarea} onKeyDown={handleKeyDown} onChange={(e) => {
+                    <textarea placeholder="Enter your instructions here. (On Desktop press Shift + Enter to break line)." value={textarea} onKeyDown={handleKeyDown} onChange={(e) => {
                         setTextarea(e.target.value);
                         if (error) setError("");
                     }}/>
