@@ -158,7 +158,7 @@ export default function Home() {
                 <div>
                     <ClipboardCheck />
                     <h3>Get it</h3>
-                    <p>Easily copy or download the json file with one click.</p>
+                    <p>Easily copy or download the JSON file with one click.</p>
                 </div>
             </Grid>
 
