@@ -30,3 +30,10 @@ footer > small {
     text-align: center;
     color: #888;
 }
+
+@media (max-width: 768px) {
+    footer { gap: 10px; }
+    footer > div { gap: 10px; justify-content: center; }
+    footer > div > a { font-size: 12px; }
+    footer > small { font-size: 10px; }
+}

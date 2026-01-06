@@ -28,3 +28,9 @@ nav > p {
     text-align: center;
     color: #666;
 }
+
+@media (max-width: 768px) {
+    nav { margin: 30px auto; }
+    nav > h1 { font-size: 20px; }
+    nav > p { font-size: 12px; }
+}
