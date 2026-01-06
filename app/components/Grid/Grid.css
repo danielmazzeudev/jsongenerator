@@ -1,6 +1,6 @@
 div.grid  {
     display: grid;
-    gap: 15px;
+    gap: 0;
     width: 100%;
     max-width: 900px;
     margin: 30px auto;
@@ -13,9 +13,6 @@ div.grid > div {
     justify-content: center;
     gap: 10px;
     width: 100%;
-    padding: 30px;
-    border-radius: 15px;
-    background-color: #ddd;
 }
 
 div.grid > div > svg {
