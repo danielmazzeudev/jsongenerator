@@ -24,7 +24,7 @@ div.grid > div > svg {
     padding: 15px;
     border-radius: 10px;
     color: #000;
-    background-color: #ccc;
+    background-color: var(--theme);
 }
 
 div.grid > div > h3 {
@@ -42,5 +42,8 @@ div.grid > div > p {
 }
 
 @media (max-width: 768px) {
-    div.grid { grid-template-columns: 1fr !important; }
+    div.grid > div { padding: 15px 10px; }
+    div.grid > div > svg { width: 50px; }
+    div.grid > div > h3 { font-size: 14px; }
+    div.grid > div > p { font-size: 12px; }
 }
