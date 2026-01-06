@@ -109,7 +109,7 @@ export default function Home() {
                         {loading ? (
                             <>
                                 <Loader />
-                                <span>Processing...</span>
+                                <span>Generating...</span>
                             </>
                         ) : (
                             <>
