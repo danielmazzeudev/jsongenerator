@@ -69,7 +69,6 @@ export default function Home() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    instruction: "You are a JSON generator. Return ONLY valid JSON. Never explain. Never use markdown. Always return structured JSON. If the input is ambiguous, infer a reasonable structure.",
                     question: textarea
                 }),
             });
