@@ -18,7 +18,11 @@ export default function Home() {
     const currentYear = new Date().getFullYear();
 
     const formatJson = (content: any): string => {
-        return typeof content === "object" ? JSON.stringify(content, null, 2) : String(content);
+        try {
+            return typeof content === "object" ? JSON.stringify(content, null, 2) : String(content);
+        } catch {
+            return String(content);
+        }
     };
 
     const handleCopy = async () => {
@@ -47,7 +51,7 @@ export default function Home() {
 
         setLoading(true);
         setError("");
-        setResult(null);
+        setResult(null); 
 
         try {
             const response = await fetch("https://json.danielmazzeu.com.br/", {
@@ -64,7 +68,7 @@ export default function Home() {
 
             setResult(data);
         } catch (err: any) {
-            setError(err.message || "Connection to server failed.");
+            setError(err.message || "Connection failed. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -74,13 +78,13 @@ export default function Home() {
         <>
             <Nav>
                 <h1>AI <span>{`{Json}`}</span> Generator</h1>
-                <p>Fast, free, flawless <strong>JSON generation</strong>. Describe what you need and let <strong>AI</strong> handle it.</p>
+                <p>Fast, free, flawless <strong>JSON generation</strong>. Just describe what you need and let the <strong>AI</strong> handle the rest.</p>
             </Nav>
 
             <Main>
                 <form onSubmit={handleSubmit}>
                     <textarea
-                        placeholder="Describe the data you need... (Shift + Enter for new line)"
+                        placeholder="Enter your instructions here. (On Desktop press Shift + Enter to break line)."
                         value={textarea}
                         onChange={(e) => {
                             setTextarea(e.target.value);
@@ -97,25 +101,51 @@ export default function Home() {
                     
                     <button type="submit" disabled={loading || !textarea.trim()}>
                         {loading ? (
-                            <><Loader className="animate-spin" /> <span>Generating...</span></>
+                            <>
+                                <Loader style={{ animation: "spin 1s linear infinite" }} />
+                                <span>Generating...</span>
+                            </>
                         ) : (
-                            <><WandSparkles /> <span>AI Generate</span></>
+                            <>
+                                <WandSparkles style={{ animation: "none"}} />
+                                <span>AI Generate</span>
+                            </>
                         )}
                     </button>
                 </form>
 
-                {result && (
+                {result && !error && (
                     <section>
-                        <SyntaxHighlighter 
-                            language="json" 
-                            style={vscDarkPlus} 
-                            customStyle={{ borderRadius: "10px", padding: "15px", backgroundColor: "#222" }}
+                        <SyntaxHighlighter
+                            language="json"
+                            style={vscDarkPlus}
+                            showLineNumbers={true}
+                            customStyle={{
+                                margin: 0,
+                                tabSize: 4,
+                                fontSize: "16px",
+                                borderRadius: "10px",
+                                padding: "15px",
+                                backgroundColor: "#222",
+                                maxHeight: "300px",
+                                overflow: "auto"
+                            }}
                         >
                             {formatJson(result)}
                         </SyntaxHighlighter>
                         <div style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
                             <button type="button" onClick={handleCopy}>
-                                {copied ? <><CopyCheck /> Copied!</> : <><Copy /> Copy</>}
+                                {copied ? (
+                                    <>
+                                        <CopyCheck />
+                                        <span>Copied!</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Copy />
+                                        <span>Copy</span>
+                                    </>
+                                )}
                             </button>
                             <button type="button" onClick={handleDownload}><Download size={16} /> Download</button>
                         </div>
@@ -127,12 +157,12 @@ export default function Home() {
                 <div>
                     <PencilLine />
                     <h3>Describe</h3>
-                    <p>Write what kind of data you need in plain English.</p>
+                    <p>Write what kind of data you need in plain English or any language.</p>
                 </div>
                 <div>
                     <WandSparkles />
                     <h3>Generate</h3>
-                    <p>Our AI processes instructions and builds structured JSON.</p>
+                    <p>Our AI processes your instructions and builds a structured JSON.</p>
                 </div>
                 <div>
                     <ClipboardCheck />
