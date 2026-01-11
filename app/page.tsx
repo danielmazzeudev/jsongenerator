@@ -73,7 +73,7 @@ export default function Home() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    instruction: "You are a JSON generator. Always return ONLY valid JSON. Never explain anything. If the input is ambiguous, infer a reasonable structure. The JSON must always be an array of objects.",
+                    instruction: "You are a JSON generator. Return ONLY valid JSON. Never explain. Never use markdown. Always return an array of objects. If the input is ambiguous, infer a reasonable structure.",
                     question: textarea,
                     jsonMode: true
                 }),
