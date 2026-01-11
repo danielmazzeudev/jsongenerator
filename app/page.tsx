@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ClipboardCheck, Copy, CopyCheck, Download, Loader, WandSparkles, PencilLine } from "lucide-react";
+import { Copy, CopyCheck, Download, Loader, WandSparkles, PencilLine, ClipboardCheck } from "lucide-react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Nav } from "./components/Nav/Nav";
@@ -18,72 +18,53 @@ export default function Home() {
     const currentYear = new Date().getFullYear();
 
     const formatJson = (content: any): string => {
-        try {
-            return JSON.stringify(content, null, 2);
-        } catch {
-            return String(content);
-        }
+        return typeof content === "object" ? JSON.stringify(content, null, 2) : String(content);
     };
 
-    const handleCopy = () => {
-        navigator.clipboard.writeText(formatJson(result));
+    const handleCopy = async () => {
+        if (!result) return;
+        await navigator.clipboard.writeText(formatJson(result));
         setCopied(true);
-        setTimeout(() => setCopied(false), 3000);
+        setTimeout(() => setCopied(false), 2000);
     };
 
     const handleDownload = () => {
-        const jsonString = formatJson(result);
-        const blob = new Blob([jsonString], { type: "application/json" });
+        if (!result) return;
+        const blob = new Blob([formatJson(result)], { type: "application/json" });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        link.download = "generated.json";
+        link.download = "generated_data.json";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
     };
 
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        if (e.key === "Enter" && !e.shiftKey && !loading) {
-            e.preventDefault();
-            const form = e.currentTarget.form;
-            if (form) form.requestSubmit();
-        }
-    };
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setError("");
-        setResult(null);
-
-        if (!textarea.trim()) {
-            setError("Please enter your instructions.");
-            return;
-        }
+    const handleSubmit = async (e?: React.FormEvent) => {
+        if (e) e.preventDefault();
+        if (!textarea.trim() || loading) return;
 
         setLoading(true);
+        setError("");
+        setResult(null); 
 
         try {
             const response = await fetch("https://json.danielmazzeu.com.br/", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    question: textarea
-                }),
+                body: JSON.stringify({ question: textarea }),
             });
 
+            const data = await response.json();
+
             if (!response.ok) {
-                throw new Error("Request failed");
+                throw new Error(data.error || "Erro ao gerar JSON");
             }
 
-            const data = await response.json();
             setResult(data);
-
-        } catch (err) {
-            console.error(err);
-            setError("Failed to fetch response. Please try again.");
-            setResult(null);
+        } catch (err: any) {
+            setError(err.message || "Falha na conexão com o servidor.");
         } finally {
             setLoading(false);
         }
@@ -92,7 +73,7 @@ export default function Home() {
     return (
         <>
             <Nav>
-                <h1>AI <span>&#123;Json&#125;</span> Generator</h1>
+                <h1>AI <span>{`{Json}`}</span> Generator</h1>
                 <p>Fast, free, flawless <strong>JSON generation</strong>. Just describe what you need and let the <strong>AI</strong> handle the rest.</p>
             </Nav>
 
@@ -101,60 +82,45 @@ export default function Home() {
                     <textarea
                         placeholder="Enter your instructions here. (On Desktop press Shift + Enter to break line)."
                         value={textarea}
-                        onKeyDown={handleKeyDown}
                         onChange={(e) => {
                             setTextarea(e.target.value);
                             if (error) setError("");
                         }}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter" && !e.shiftKey) {
+                                e.preventDefault();
+                                handleSubmit();
+                            }
+                        }}
                     />
-                    {error && <span>{error}</span>}
-                    <button type="submit" className="loading" disabled={loading}>
+                    {error && <span style={{ color: "#ff4d4d", fontSize: "14px", marginTop: "10px", display: "block" }}>{error}</span>}
+                    
+                    <button type="submit" disabled={loading || !textarea.trim()}>
                         {loading ? (
-                            <>
-                                <Loader />
-                                <span>Generating...</span>
-                            </>
+                            <><Loader style={{ animation: "spin 1s linear infinite" }} /> <span>Generating...</span></>
                         ) : (
-                            <>
-                                <WandSparkles style={{ animation: "none"}} />
-                                <span>AI Generate</span>
-                            </>
+                            <><WandSparkles /> <span>AI Generate</span></>
                         )}
                     </button>
                 </form>
 
-                {result && !error && (
+                {result && (
                     <section>
-                        <SyntaxHighlighter
-                            language="json"
-                            style={vscDarkPlus}
-                            showLineNumbers={true}
-                            customStyle={{
-                                margin: 0,
-                                tabSize: 4,
-                                fontSize: "16px",
-                                borderRadius: "10px",
-                                padding: "15px",
+                        <SyntaxHighlighter 
+                            language="json" 
+                            style={vscDarkPlus} 
+                            customStyle={{ 
+                                borderRadius: "10px", 
+                                padding: "15px", 
                                 backgroundColor: "#222",
-                                maxHeight: "300px",
-                                overflow: "auto"
+                                maxHeight: "400px" 
                             }}
                         >
                             {formatJson(result)}
                         </SyntaxHighlighter>
-                        <div style={{ display: "flex", gap: "10px" }}>
+                        <div style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
                             <button type="button" onClick={handleCopy}>
-                                {copied ? (
-                                    <>
-                                        <CopyCheck />
-                                        <span>Copied!</span>
-                                    </>
-                                ) : (
-                                    <>
-                                        <Copy />
-                                        <span>Copy</span>
-                                    </>
-                                )}
+                                {copied ? <><CopyCheck /> Copied!</> : <><Copy /> Copy</>}
                             </button>
                             <button type="button" onClick={handleDownload}><Download size={16} /> Download</button>
                         </div>
