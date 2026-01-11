@@ -65,7 +65,7 @@ export default function Home() {
         setLoading(true);
 
         try {
-            const response = await fetch("https://gptagent.danielmazzeu.com.br/", {
+            const response = await fetch("https://json.danielmazzeu.com.br/", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -79,7 +79,7 @@ export default function Home() {
             }
 
             const data = await response.json();
-            setResult(data); // agora data já é JSON real
+            setResult(data);
 
         } catch (err) {
             console.error(err);
