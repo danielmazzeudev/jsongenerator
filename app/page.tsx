@@ -17,8 +17,7 @@ export default function Home() {
     const [copied, setCopied] = useState(false);
     const currentYear = new Date().getFullYear();
 
-    const formatJson = (content: object | string): string => {
-        if (typeof content === "object") return JSON.stringify(content, null, 2);
+    const formatJson = (content: string): string => {
         try {
             return JSON.stringify(JSON.parse(content), null, 2);
         } catch {
@@ -80,12 +79,15 @@ export default function Home() {
                 }),
             });
 
+            if (!response.ok) {
+                throw new Error("Request failed");
+            }
+
             const data = await response.json();
             setResult(data.response);
         } catch {
             setError("Failed to fetch response. Please try again.");
             setResult("");
-            setResult("Failed to fetch response.");
         } finally {
             setLoading(false);
         }
