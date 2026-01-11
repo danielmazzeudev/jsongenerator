@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ClipboardCheck, Copy, CopyCheck, Download, Loader, PencilLine, WandSparkles } from "lucide-react";
+import { ClipboardCheck, Copy, CopyCheck, Download, Loader, WandSparkles, PencilLine } from "lucide-react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Nav } from "./components/Nav/Nav";
@@ -11,27 +11,24 @@ import { Footer } from "./components/Footer/Footer";
 
 export default function Home() {
     const [textarea, setTextarea] = useState("");
-    const [result, setResult] = useState("");
+    const [result, setResult] = useState<any>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [copied, setCopied] = useState(false);
     const currentYear = new Date().getFullYear();
 
-    const formatJson = (content: string): string => {
+    const formatJson = (content: any): string => {
         try {
-            return JSON.stringify(JSON.parse(content), null, 2);
+            return JSON.stringify(content, null, 2);
         } catch {
-            return content;
+            return String(content);
         }
     };
 
     const handleCopy = () => {
         navigator.clipboard.writeText(formatJson(result));
         setCopied(true);
-        
-        setTimeout(() => {
-            setCopied(false);
-        }, 3000);
+        setTimeout(() => setCopied(false), 3000);
     };
 
     const handleDownload = () => {
@@ -51,15 +48,14 @@ export default function Home() {
         if (e.key === "Enter" && !e.shiftKey && !loading) {
             e.preventDefault();
             const form = e.currentTarget.form;
-            if (form) {
-                form.requestSubmit(); 
-            }
+            if (form) form.requestSubmit();
         }
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError("");
+        setResult(null);
 
         if (!textarea.trim()) {
             setError("Please enter your instructions.");
@@ -73,9 +69,8 @@ export default function Home() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    instruction: "You are a JSON generator. Return ONLY valid JSON. Never explain. Never use markdown. Always return an array of objects. If the input is ambiguous, infer a reasonable structure.",
-                    question: textarea,
-                    jsonMode: true
+                    instruction: "You are a JSON generator. Return ONLY valid JSON. Never explain. Never use markdown. Always return structured JSON. If the input is ambiguous, infer a reasonable structure.",
+                    question: textarea
                 }),
             });
 
@@ -84,10 +79,12 @@ export default function Home() {
             }
 
             const data = await response.json();
-            setResult(data.response);
-        } catch {
+            setResult(data);
+
+        } catch (err) {
+            console.error(err);
             setError("Failed to fetch response. Please try again.");
-            setResult("");
+            setResult(null);
         } finally {
             setLoading(false);
         }
@@ -102,10 +99,15 @@ export default function Home() {
 
             <Main>
                 <form onSubmit={handleSubmit}>
-                    <textarea placeholder="Enter your instructions here. (On Desktop press Shift + Enter to break line)." value={textarea} onKeyDown={handleKeyDown} onChange={(e) => {
-                        setTextarea(e.target.value);
-                        if (error) setError("");
-                    }}/>
+                    <textarea
+                        placeholder="Enter your instructions here. (On Desktop press Shift + Enter to break line)."
+                        value={textarea}
+                        onKeyDown={handleKeyDown}
+                        onChange={(e) => {
+                            setTextarea(e.target.value);
+                            if (error) setError("");
+                        }}
+                    />
                     {error && <span>{error}</span>}
                     <button type="submit" className="loading" disabled={loading}>
                         {loading ? (
@@ -121,12 +123,27 @@ export default function Home() {
                         )}
                     </button>
                 </form>
+
                 {result && !error && (
                     <section>
-                        <SyntaxHighlighter language="json" style={vscDarkPlus} showLineNumbers={true} customStyle={{ margin: 0, tabSize: 4, fontSize: "16px", borderRadius: "10px", padding: "15px", backgroundColor: "#222", maxHeight: "300px", overflow: "auto" }}>
+                        <SyntaxHighlighter
+                            language="json"
+                            style={vscDarkPlus}
+                            showLineNumbers={true}
+                            customStyle={{
+                                margin: 0,
+                                tabSize: 4,
+                                fontSize: "16px",
+                                borderRadius: "10px",
+                                padding: "15px",
+                                backgroundColor: "#222",
+                                maxHeight: "300px",
+                                overflow: "auto"
+                            }}
+                        >
                             {formatJson(result)}
                         </SyntaxHighlighter>
-                        <div style={{display: "flex", gap: "10px"}}>
+                        <div style={{ display: "flex", gap: "10px" }}>
                             <button type="button" onClick={handleCopy}>
                                 {copied ? (
                                     <>
@@ -150,10 +167,10 @@ export default function Home() {
                 <div>
                     <PencilLine />
                     <h3>Describe</h3>
-                    <p>Write what kind of data you need in plain english or any language.</p>
+                    <p>Write what kind of data you need in plain English or any language.</p>
                 </div>
                 <div>
-                    <WandSparkles  />
+                    <WandSparkles />
                     <h3>Generate</h3>
                     <p>Our AI processes your instructions and builds a structured JSON.</p>
                 </div>
