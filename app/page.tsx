@@ -79,7 +79,7 @@ export default function Home() {
             }
 
             const data = await response.json();
-            setResult(data);
+            setResult(data); // agora data já é JSON real
 
         } catch (err) {
             console.error(err);
