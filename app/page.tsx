@@ -17,11 +17,17 @@ export default function Home() {
     const [copied, setCopied] = useState(false);
     const currentYear = new Date().getFullYear();
 
+    // Função corrigida para lidar com a nova estrutura do backend
     const formatJson = (content: any): string => {
+        if (!content) return "";
+        
+        // Se o backend retornou { success: true, data: {...} }
+        const dataToDisplay = content.data !== undefined ? content.data : content;
+
         try {
-            return typeof content === "object" ? JSON.stringify(content, null, 2) : String(content);
+            return JSON.stringify(dataToDisplay, null, 4);
         } catch {
-            return String(content);
+            return String(dataToDisplay);
         }
     };
 
@@ -62,7 +68,7 @@ export default function Home() {
 
             const data = await response.json();
 
-            if (!response.ok) {
+            if (!response.ok || data.success === false) {
                 throw new Error(data.error || "Error generating JSON");
             }
 
@@ -84,7 +90,7 @@ export default function Home() {
             <Main>
                 <form onSubmit={handleSubmit}>
                     <textarea
-                        placeholder="Enter your instructions here. (On Desktop press Shift + Enter to break line)."
+                        placeholder="Enter your instructions here. (Example: Create a list of 3 fictional planets with their diameter and climate)."
                         value={textarea}
                         onChange={(e) => {
                             setTextarea(e.target.value);
@@ -102,12 +108,12 @@ export default function Home() {
                     <button type="submit" disabled={loading || !textarea.trim()}>
                         {loading ? (
                             <>
-                                <Loader style={{ animation: "spin 1s linear infinite" }} />
+                                <Loader style={{ animation: "spin 1s linear infinite" }} className="animate-spin" />
                                 <span>Generating...</span>
                             </>
                         ) : (
                             <>
-                                <WandSparkles style={{ animation: "none"}} />
+                                <WandSparkles />
                                 <span>AI Generate</span>
                             </>
                         )}
@@ -115,7 +121,7 @@ export default function Home() {
                 </form>
 
                 {result && !error && (
-                    <section>
+                    <section style={{ marginTop: "20px", width: "100%" }}>
                         <SyntaxHighlighter
                             language="json"
                             style={vscDarkPlus}
@@ -123,31 +129,25 @@ export default function Home() {
                             customStyle={{
                                 margin: 0,
                                 tabSize: 4,
-                                fontSize: "16px",
+                                fontSize: "15px",
                                 borderRadius: "10px",
-                                padding: "15px",
-                                backgroundColor: "#222",
-                                maxHeight: "300px",
-                                overflow: "auto"
+                                padding: "20px",
+                                backgroundColor: "#1e1e1e",
+                                maxHeight: "450px",
+                                overflow: "auto",
+                                border: "1px solid #333"
                             }}
                         >
                             {formatJson(result)}
                         </SyntaxHighlighter>
+                        
                         <div style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
-                            <button type="button" onClick={handleCopy}>
-                                {copied ? (
-                                    <>
-                                        <CopyCheck />
-                                        <span>Copied!</span>
-                                    </>
-                                ) : (
-                                    <>
-                                        <Copy />
-                                        <span>Copy</span>
-                                    </>
-                                )}
+                            <button className="action-btn" type="button" onClick={handleCopy}>
+                                {copied ? <><CopyCheck size={18} /> Copied!</> : <><Copy size={18} /> Copy JSON</>}
                             </button>
-                            <button type="button" onClick={handleDownload}><Download size={16} /> Download</button>
+                            <button className="action-btn" type="button" onClick={handleDownload}>
+                                <Download size={18} /> Download .json
+                            </button>
                         </div>
                     </section>
                 )}
