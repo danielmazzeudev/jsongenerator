@@ -63,7 +63,11 @@ export default function Home() {
             const response = await fetch("https://json.danielmazzeu.com.br/", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ question: textarea })
+                body: JSON.stringify({ 
+                    // Enviamos os dois campos para evitar o erro de validação
+                    instruction: "You are a professional JSON generator. Return a valid JSON object based on the user request.",
+                    question: textarea 
+                })
             });
 
             const data = await response.json();
