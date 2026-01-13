@@ -62,7 +62,7 @@ export default function Home() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ 
-                    instruction: "You are a professional JSON generator. Return a valid JSON object based on the user request. Generate maximum 5 exemples.",
+                    instruction: "You are a professional JSON generator. Return a valid JSON object based on the user request. Provide exactly 5 examples in a list.",
                     question: textarea 
                 })
             });
