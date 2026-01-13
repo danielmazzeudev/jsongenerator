@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Copy, CopyCheck, Clock, Download, Loader, WandSparkles, PencilLine, ClipboardCheck } from "lucide-react";
+import { Copy, CopyCheck, Clock, Download, FileCheck, Loader, WandSparkles, PencilLine, ClipboardCheck } from "lucide-react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Nav } from "./components/Nav/Nav";
@@ -16,6 +16,7 @@ export default function Home() {
     const [cooldown, setCooldown] = useState(0);
     const [error, setError] = useState("");
     const [copied, setCopied] = useState(false);
+    const [downloaded, setDownloaded] = useState(false);
     const currentYear = new Date().getFullYear();
 
     useEffect(() => {
@@ -161,7 +162,7 @@ export default function Home() {
                                 {copied ? <><CopyCheck size={18} /> Copied!</> : <><Copy size={18} /> Copy</>}
                             </button>
                             <button className="action-btn" type="button" onClick={handleDownload}>
-                                <Download size={18} /> Download
+                                {downloaded ? <><FileCheck size={18} /> Donwloaded!</> : <><Download size={18} /> Download</>}
                             </button>
                         </div>
                     </section>
