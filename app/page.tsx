@@ -17,11 +17,9 @@ export default function Home() {
     const [copied, setCopied] = useState(false);
     const currentYear = new Date().getFullYear();
 
-    // Função corrigida para lidar com a nova estrutura do backend
     const formatJson = (content: any): string => {
         if (!content) return "";
         
-        // Se o backend retornou { success: true, data: {...} }
         const dataToDisplay = content.data !== undefined ? content.data : content;
 
         try {
@@ -64,7 +62,6 @@ export default function Home() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ 
-                    // Enviamos os dois campos para evitar o erro de validação
                     instruction: "You are a professional JSON generator. Return a valid JSON object based on the user request. Generate maximum 5 exemples.",
                     question: textarea 
                 })
