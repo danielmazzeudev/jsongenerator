@@ -56,6 +56,8 @@ export default function Home() {
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
+        setDownloaded(true);
+        setTimeout(() => setDownloaded(false), 2000);
     };
 
     const handleSubmit = async (e?: React.FormEvent) => {
