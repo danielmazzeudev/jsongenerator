@@ -27,7 +27,7 @@ main button svg {
     color: var(--theme);
 }
 
-main button.loading > svg {
+main button > svg.loading {
     animation: loading 2s linear infinite;
 }
 
