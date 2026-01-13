@@ -133,7 +133,7 @@ export default function Home() {
                 </form>
 
                 {result && !error && (
-                    <section style={{ marginTop: "20px", width: "100%" }}>
+                    <section style={{ width: "100%" }}>
                         <SyntaxHighlighter
                             language="json"
                             style={vscDarkPlus}
