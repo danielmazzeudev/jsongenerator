@@ -109,7 +109,7 @@ export default function Home() {
                     <button type="submit" disabled={loading || !textarea.trim()}>
                         {loading ? (
                             <>
-                                <Loader />
+                                <Loader className="loading"/>
                                 <span>Generating...</span>
                             </>
                         ) : (
