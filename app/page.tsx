@@ -65,7 +65,7 @@ export default function Home() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ 
                     // Enviamos os dois campos para evitar o erro de validação
-                    instruction: "You are a professional JSON generator. Return a valid JSON object based on the user request.",
+                    instruction: "You are a professional JSON generator. Return a valid JSON object based on the user request. Generate maximum 5 exemples.",
                     question: textarea 
                 })
             });
