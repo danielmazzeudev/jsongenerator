@@ -50,7 +50,7 @@ export default function Home() {
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        link.download = "generated_data.json";
+        link.download = "generated.json";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -158,10 +158,10 @@ export default function Home() {
                         
                         <div style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
                             <button className="action-btn" type="button" onClick={handleCopy}>
-                                {copied ? <><CopyCheck size={18} /> Copied!</> : <><Copy size={18} /> Copy JSON</>}
+                                {copied ? <><CopyCheck size={18} /> Copied!</> : <><Copy size={18} /> Copy</>}
                             </button>
                             <button className="action-btn" type="button" onClick={handleDownload}>
-                                <Download size={18} /> Download .json
+                                <Download size={18} /> Download
                             </button>
                         </div>
                     </section>
