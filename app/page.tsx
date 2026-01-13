@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Copy, CopyCheck, Download, Loader, WandSparkles, PencilLine, ClipboardCheck } from "lucide-react";
+import { Copy, CopyCheck, Clock, Download, Loader, WandSparkles, PencilLine, ClipboardCheck } from "lucide-react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Nav } from "./components/Nav/Nav";
@@ -122,7 +122,10 @@ export default function Home() {
                                 <span>Generating...</span>
                             </>
                         ) : cooldown > 0 ? (
-                            <span>Wait {cooldown}s</span>
+                            <>
+                                <Clock />
+                                <span>Wait {cooldown}s</span>
+                            </>
                         ) : (
                             <>
                                 <WandSparkles />
