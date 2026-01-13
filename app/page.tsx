@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Copy, CopyCheck, Download, Loader, WandSparkles, PencilLine, ClipboardCheck } from "lucide-react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -13,9 +13,17 @@ export default function Home() {
     const [textarea, setTextarea] = useState("");
     const [result, setResult] = useState<any>(null);
     const [loading, setLoading] = useState(false);
+    const [cooldown, setCooldown] = useState(0);
     const [error, setError] = useState("");
     const [copied, setCopied] = useState(false);
     const currentYear = new Date().getFullYear();
+
+    useEffect(() => {
+        if (cooldown > 0) {
+            const timer = setTimeout(() => setCooldown(cooldown - 1), 1000);
+            return () => clearTimeout(timer);
+        }
+    }, [cooldown]);
 
     const formatJson = (content: any): string => {
         if (!content) return "";
@@ -51,7 +59,7 @@ export default function Home() {
 
     const handleSubmit = async (e?: React.FormEvent) => {
         if (e) e.preventDefault();
-        if (!textarea.trim() || loading) return;
+        if (!textarea.trim() || loading || cooldown > 0) return;
 
         setLoading(true);
         setError("");
@@ -74,6 +82,7 @@ export default function Home() {
             }
 
             setResult(data);
+            setCooldown(10);
         } catch (err: any) {
             setError(err.message || "Connection failed. Please try again.");
         } finally {
@@ -106,12 +115,14 @@ export default function Home() {
                     />
                     {error && <span style={{ color: "#ff4d4d", fontSize: "14px", marginTop: "10px", display: "block" }}>{error}</span>}
                     
-                    <button type="submit" disabled={loading || !textarea.trim()}>
+                    <button type="submit" disabled={loading || !textarea.trim() || cooldown > 0}>
                         {loading ? (
                             <>
                                 <Loader className="loading"/>
                                 <span>Generating...</span>
                             </>
+                        ) : cooldown > 0 ? (
+                            <span>Wait {cooldown}s</span>
                         ) : (
                             <>
                                 <WandSparkles />
