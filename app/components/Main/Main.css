@@ -18,7 +18,7 @@ main button {
     border: none;
     font-size: 14px;
     color: #fff;
-    background-color: #222;
+    background-color: #000;
 }
 
 main button svg {
@@ -44,9 +44,11 @@ main > section {
     width: 100%;
     padding: 15px;
     border-radius: 15px;
-    border: 1px solid #ddd;
-    background-color: #303030;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    border: 1px solid rgba(0, 255, 204, 0.4);
+    background-color: rgba(0, 255, 204, 0.05);
+    box-shadow: 
+        0 0 5px rgba(0, 255, 204, 0.2),
+        inset 0 0 5px rgba(0, 255, 204, 0.2);
 }
 
 main > form > textarea {
@@ -57,8 +59,8 @@ main > form > textarea {
     border-radius: 8px;
     border: none;
     font-size: 14px;
-    color: #fff;
-    background-color: #222;
+    color: #00ffcc;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 main > form > span {

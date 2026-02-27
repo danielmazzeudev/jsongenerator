@@ -51,7 +51,7 @@ export default function Home() {
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        link.download = "generated.json";
+        link.download = "gerado.json";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -73,7 +73,7 @@ export default function Home() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ 
-                    instruction: "You are a professional JSON generator. Return a valid JSON object based on the user request. Provide exactly 5 examples in a list.",
+                    instruction: "Você é um gerador de JSON profissional. Retorne um objeto JSON válido baseado na solicitação do usuário. Forneça exatamente 5 exemplos em uma lista.",
                     question: textarea 
                 })
             });
@@ -81,13 +81,13 @@ export default function Home() {
             const data = await response.json();
 
             if (!response.ok || data.success === false) {
-                throw new Error(data.error || "Error generating JSON");
+                throw new Error(data.error || "Erro ao gerar JSON");
             }
 
             setResult(data);
             setCooldown(10);
         } catch (err: any) {
-            setError(err.message || "Connection failed. Please try again.");
+            setError(err.message || "Falha na conexão. Por favor, tente novamente.");
         } finally {
             setLoading(false);
         }
@@ -96,14 +96,14 @@ export default function Home() {
     return (
         <>
             <Nav>
-                <h1>AI <span>{`{Json}`}</span> Generator</h1>
-                <p>Fast, free, flawless <strong>JSON generation</strong>. Just describe what you need and let the <strong>AI</strong> handle the rest.</p>
+                <h1>Gerador de <span>{`{Json}`}</span> IA</h1>
+                <p>Geração de <strong>JSON</strong> rápida, gratuita e impecável. Apenas descreva o que você precisa e deixe a <strong>IA</strong> cuidar do resto.</p>
             </Nav>
 
             <Main>
                 <form onSubmit={handleSubmit}>
                     <textarea
-                        placeholder="Enter your instructions here. (Example: Create a list of 3 fictional planets with their diameter and climate)."
+                        placeholder="Digite suas instruções aqui. (Exemplo: Crie uma lista de 3 planetas fictícios com seus diâmetros e climas)."
                         value={textarea}
                         onChange={(e) => {
                             setTextarea(e.target.value);
@@ -122,17 +122,17 @@ export default function Home() {
                         {loading ? (
                             <>
                                 <Loader className="loading"/>
-                                <span>Generating...</span>
+                                <span>Gerando...</span>
                             </>
                         ) : cooldown > 0 ? (
                             <>
                                 <Clock />
-                                <span>Wait {cooldown}s</span>
+                                <span>Aguarde {cooldown}s</span>
                             </>
                         ) : (
                             <>
                                 <WandSparkles />
-                                <span>AI Generate</span>
+                                <span>Gerar com IA</span>
                             </>
                         )}
                     </button>
@@ -150,10 +150,9 @@ export default function Home() {
                                 fontSize: "15px",
                                 borderRadius: "10px",
                                 padding: "20px",
-                                backgroundColor: "#1e1e1e",
+                                backgroundColor: "rgba(0,0,0,0.5)",
                                 maxHeight: "450px",
-                                overflow: "auto",
-                                border: "1px solid #333"
+                                overflow: "auto"
                             }}
                         >
                             {formatJson(result)}
@@ -161,10 +160,10 @@ export default function Home() {
                         
                         <div style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
                             <button className="action-btn" type="button" onClick={handleCopy}>
-                                {copied ? <><CopyCheck size={18} /> Copied!</> : <><Copy size={18} /> Copy</>}
+                                {copied ? <><CopyCheck size={18} /> Copiado!</> : <><Copy size={18} /> Copiar</>}
                             </button>
                             <button className="action-btn" type="button" onClick={handleDownload}>
-                                {downloaded ? <><FileCheck size={18} /> Donwloaded!</> : <><Download size={18} /> Download</>}
+                                {downloaded ? <><FileCheck size={18} /> Baixado!</> : <><Download size={18} /> Baixar</>}
                             </button>
                         </div>
                     </section>
@@ -174,27 +173,23 @@ export default function Home() {
             <Grid columns={3}>
                 <div>
                     <PencilLine />
-                    <h3>Describe</h3>
-                    <p>Write what kind of data you need in plain English or any language.</p>
+                    <h3>Descreva</h3>
+                    <p>Escreva que tipo de dados você precisa em português ou qualquer outro idioma.</p>
                 </div>
                 <div>
                     <WandSparkles />
-                    <h3>Generate</h3>
-                    <p>Our AI processes your instructions and builds a structured JSON.</p>
+                    <h3>Gere</h3>
+                    <p>Nossa IA processa suas instruções e constrói um JSON estruturado.</p>
                 </div>
                 <div>
                     <ClipboardCheck />
-                    <h3>Get it</h3>
-                    <p>Easily copy or download the JSON file with one click.</p>
+                    <h3>Obtenha</h3>
+                    <p>Copie ou baixe facilmente o arquivo JSON com apenas um clique.</p>
                 </div>
             </Grid>
 
             <Footer>
-                <div>
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms of use</a>
-                </div>
-                <small>Created and developed by Daniel Mazzeu<br/>All rights reserved {currentYear}.</small>
+                <small>Criado e desenvolvido por Daniel Mazzeu<br/>Todos os direitos reservados {currentYear}.</small>
             </Footer>
         </>
     );
