@@ -19,6 +19,10 @@
     font-optical-sizing: auto;
     image-rendering: optimizeQuality;
     list-style: none;
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
     -webkit-tap-highlight-color: transparent !important;
 }
 
