@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css";
 import Background from "./components/Background/Background";
+import Security from "./security";
 
 export const viewport: Viewport = {
     colorScheme: 'light',
@@ -48,6 +49,7 @@ export default function RootLayout({
     return (
         <html lang="en" style={{ colorScheme: 'light' }}>
             <body suppressHydrationWarning={true}>
+                <Security />
                 <Background />
                 <Analytics/>
                 {children}
