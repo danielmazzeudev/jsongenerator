@@ -105,6 +105,7 @@ export default function Home() {
                     <textarea
                         placeholder="Digite suas instruções aqui. (Exemplo: Crie uma lista de 3 planetas fictícios com seus diâmetros e climas)."
                         value={textarea}
+                        maxLength={500}
                         onChange={(e) => {
                             setTextarea(e.target.value);
                             if (error) setError("");
