@@ -234,7 +234,7 @@ export default function Home() {
               Lumni
             </a>{" "}
             /{" "}
-            <a href="https://www.danielmazzeu.com.br/" target="_blank" rel="noreferrer">
+            <a href="https://danielmazzeu.com.br/" target="_blank" rel="noreferrer">
               Daniel Mazzeu
             </a>
             .
