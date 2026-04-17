@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const payload = generateJsonFromPrompt(prompt);
+    const payload = await generateJsonFromPrompt(prompt);
     return applyApiHeaders(NextResponse.json(payload), validation.origin);
   } catch {
     return buildErrorResponse(
