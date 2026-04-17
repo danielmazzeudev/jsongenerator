@@ -19,6 +19,17 @@ const DEFAULT_COUNT = 5;
 
 const ENTITY_PRESETS: EntityPreset[] = [
   {
+    match: /(cor|cores|arco iris|arco-iris|rainbow|paleta)/i,
+    entity: "cores",
+    fields: [
+      { key: "id", type: "number" },
+      { key: "nome", type: "string" },
+      { key: "hex", type: "string" },
+      { key: "rgb", type: "string" },
+      { key: "ordem", type: "number" },
+    ],
+  },
+  {
     match: /(pokemon|pok[eé]mon|pikachu|charizard|bulbasaur)/i,
     entity: "pokemons",
     fields: [
@@ -41,7 +52,7 @@ const ENTITY_PRESETS: EntityPreset[] = [
     ],
   },
   {
-    match: /(produto|produtos|item|itens|catalogo|cat[aá]logo)/i,
+    match: /(produto|produtos|item|itens|catalogo|catalogo)/i,
     entity: "produtos",
     fields: [
       { key: "id", type: "number" },
@@ -63,7 +74,7 @@ const ENTITY_PRESETS: EntityPreset[] = [
     ],
   },
   {
-    match: /(empresa|empresas|startup|startups|negocio|neg[oó]cio)/i,
+    match: /(empresa|empresas|startup|startups|negocio|negocio)/i,
     entity: "empresas",
     fields: [
       { key: "id", type: "number" },
@@ -74,7 +85,7 @@ const ENTITY_PRESETS: EntityPreset[] = [
     ],
   },
   {
-    match: /(evento|eventos|agenda|reuniao|reuni[aã]o)/i,
+    match: /(evento|eventos|agenda|reuniao|reuniao)/i,
     entity: "eventos",
     fields: [
       { key: "id", type: "number" },
@@ -99,6 +110,28 @@ const NAME_BANK = [
   "Laguna",
 ];
 
+const COLOR_NAMES = [
+  "Vermelho",
+  "Laranja",
+  "Amarelo",
+  "Verde",
+  "Azul",
+  "Anil",
+  "Violeta",
+];
+
+const COLOR_HEXES = ["#FF0000", "#FF7F00", "#FFFF00", "#00A651", "#007FFF", "#4B0082", "#8F00FF"];
+
+const COLOR_RGB_VALUES = [
+  "255, 0, 0",
+  "255, 127, 0",
+  "255, 255, 0",
+  "0, 166, 81",
+  "0, 127, 255",
+  "75, 0, 130",
+  "143, 0, 255",
+];
+
 const POKEMON_NAMES = [
   "Voltiger",
   "Florash",
@@ -112,16 +145,7 @@ const POKEMON_NAMES = [
   "Sparkit",
 ];
 
-const POKEMON_TYPES = [
-  "eletrico",
-  "agua",
-  "fogo",
-  "grama",
-  "pedra",
-  "psiquico",
-  "gelo",
-  "voador",
-];
+const POKEMON_TYPES = ["eletrico", "agua", "fogo", "grama", "pedra", "psiquico", "gelo", "voador"];
 
 const POKEMON_ABILITIES = [
   "choque rapido",
@@ -148,7 +172,7 @@ function normalizeText(value: string) {
 
 function inferCount(prompt: string) {
   const match = prompt.match(
-    /(?:exatamente|com|gere|crie|lista de|retorne|monte)?\s*(\d{1,2})\s+(?:exemplos|itens|objetos|registros|pokemons|pokemon|planetas|usuarios|usuarios|produtos|eventos|empresas)/i,
+    /(?:exatamente|com|gere|crie|lista de|retorne|monte)?\s*(\d{1,2})\s+(?:exemplos|itens|objetos|registros|pokemons|pokemon|planetas|usuarios|produtos|eventos|empresas|cores)/i,
   );
   if (!match) return DEFAULT_COUNT;
   const count = Number(match[1]);
@@ -194,6 +218,10 @@ function extractTopic(prompt: string) {
           "dos",
           "das",
           "que",
+          "cores",
+          "cor",
+          "arco",
+          "iris",
         ].includes(word),
     );
 
@@ -238,9 +266,29 @@ function buildPromptTopic(prompt: string) {
     .join(" ");
 }
 
+function buildColorString(seed: number, key: string) {
+  if (/nome/i.test(key)) {
+    return COLOR_NAMES[seed % COLOR_NAMES.length];
+  }
+
+  if (/hex/i.test(key)) {
+    return COLOR_HEXES[seed % COLOR_HEXES.length];
+  }
+
+  if (/rgb/i.test(key)) {
+    return COLOR_RGB_VALUES[seed % COLOR_RGB_VALUES.length];
+  }
+
+  return COLOR_NAMES[seed % COLOR_NAMES.length];
+}
+
 function buildString(seed: number, key: string, prompt: string, entity: string) {
   const promptTopic = buildPromptTopic(prompt);
   const baseName = NAME_BANK[seed % NAME_BANK.length];
+
+  if (entity === "cores") {
+    return buildColorString(seed, key);
+  }
 
   if (entity === "pokemons") {
     if (/nome/i.test(key)) {
@@ -286,6 +334,10 @@ function buildString(seed: number, key: string, prompt: string, entity: string) 
 }
 
 function buildNumber(seed: number, key: string) {
+  if (/ordem/i.test(key)) {
+    return seed + 1;
+  }
+
   if (/preco/i.test(key)) {
     return Number((49.9 + seed * 17.35).toFixed(2));
   }
@@ -343,8 +395,9 @@ function buildItem(fields: FieldDefinition[], index: number, prompt: string, ent
 
 export function generateJsonFromPrompt(prompt: string) {
   const cleanPrompt = prompt.trim();
-  const count = inferCount(cleanPrompt);
   const preset = inferPreset(cleanPrompt);
+  const requestedCount = inferCount(cleanPrompt);
+  const count = preset.entity === "cores" ? Math.min(requestedCount, COLOR_NAMES.length) : requestedCount;
   const items = Array.from({ length: count }, (_, index) =>
     buildItem(preset.fields, index, cleanPrompt, preset.entity),
   );
