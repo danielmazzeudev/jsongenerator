@@ -169,7 +169,7 @@ export default function Home() {
                 customStyle={{
                   margin: 0,
                   tabSize: 4,
-                  fontSize: "13px",
+                  fontSize: "0.82rem",
                   borderRadius: "10px",
                   padding: "20px",
                   backgroundColor: "#111111",

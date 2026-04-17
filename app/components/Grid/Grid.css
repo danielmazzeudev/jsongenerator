@@ -63,7 +63,7 @@ div.grid > div > svg {
 }
 
 div.grid > div > h3 {
-    font-size: 0.96rem;
+    font-size: var(--font-size-card-title);
     font-weight: 700;
     text-transform: uppercase;
     text-align: center;
