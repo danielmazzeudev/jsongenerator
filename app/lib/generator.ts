@@ -12,7 +12,8 @@ interface FieldDefinition {
 interface EntityPreset {
   match: RegExp;
   entity: string;
-  fields: FieldDefinition[];
+  defaultFields: FieldDefinition[];
+  listValues?: string[];
 }
 
 const DEFAULT_COUNT = 5;
@@ -21,102 +22,58 @@ const ENTITY_PRESETS: EntityPreset[] = [
   {
     match: /(cor|cores|arco iris|arco-iris|rainbow|paleta)/i,
     entity: "cores",
-    fields: [
-      { key: "id", type: "number" },
-      { key: "nome", type: "string" },
-      { key: "hex", type: "string" },
-      { key: "rgb", type: "string" },
-      { key: "ordem", type: "number" },
-    ],
+    defaultFields: [{ key: "nome", type: "string" }],
+    listValues: ["Vermelho", "Laranja", "Amarelo", "Verde", "Azul", "Anil", "Violeta"],
   },
   {
     match: /(pokemon|pok[eé]mon|pikachu|charizard|bulbasaur)/i,
     entity: "pokemons",
-    fields: [
-      { key: "id", type: "number" },
+    defaultFields: [
       { key: "nome", type: "string" },
       { key: "tipo", type: "string" },
       { key: "habilidade", type: "string" },
-      { key: "evolui", type: "boolean" },
     ],
   },
   {
     match: /(usuario|usuarios|cliente|clientes|pessoa|pessoas|contato|contatos)/i,
     entity: "usuarios",
-    fields: [
-      { key: "id", type: "number" },
+    defaultFields: [
       { key: "nome", type: "string" },
       { key: "email", type: "string" },
-      { key: "ativo", type: "boolean" },
-      { key: "criadoEm", type: "date" },
     ],
   },
   {
-    match: /(produto|produtos|item|itens|catalogo|catalogo)/i,
+    match: /(produto|produtos|item|itens|catalogo|catálogo|catalogo)/i,
     entity: "produtos",
-    fields: [
-      { key: "id", type: "number" },
+    defaultFields: [
       { key: "nome", type: "string" },
-      { key: "categoria", type: "string" },
       { key: "preco", type: "number" },
-      { key: "emEstoque", type: "boolean" },
     ],
   },
   {
     match: /(planeta|planetas|astro|astros|sistema|sistemas)/i,
     entity: "planetas",
-    fields: [
-      { key: "id", type: "number" },
+    defaultFields: [
       { key: "nome", type: "string" },
       { key: "clima", type: "string" },
-      { key: "diametroKm", type: "number" },
-      { key: "habitavel", type: "boolean" },
     ],
   },
   {
-    match: /(empresa|empresas|startup|startups|negocio|negocio)/i,
+    match: /(empresa|empresas|startup|startups|negocio|negócio|negocio)/i,
     entity: "empresas",
-    fields: [
-      { key: "id", type: "number" },
+    defaultFields: [
       { key: "nome", type: "string" },
       { key: "segmento", type: "string" },
-      { key: "funcionarios", type: "number" },
-      { key: "fundadaEm", type: "date" },
     ],
   },
   {
-    match: /(evento|eventos|agenda|reuniao|reuniao)/i,
+    match: /(evento|eventos|agenda|reuniao|reunião|reuniao)/i,
     entity: "eventos",
-    fields: [
-      { key: "id", type: "number" },
+    defaultFields: [
       { key: "titulo", type: "string" },
-      { key: "local", type: "string" },
       { key: "data", type: "date" },
-      { key: "confirmado", type: "boolean" },
     ],
   },
-];
-
-const COLOR_NAMES = [
-  "Vermelho",
-  "Laranja",
-  "Amarelo",
-  "Verde",
-  "Azul",
-  "Anil",
-  "Violeta",
-];
-
-const COLOR_HEXES = ["#FF0000", "#FF7F00", "#FFFF00", "#00A651", "#007FFF", "#4B0082", "#8F00FF"];
-
-const COLOR_RGB_VALUES = [
-  "255, 0, 0",
-  "255, 127, 0",
-  "255, 255, 0",
-  "0, 166, 81",
-  "0, 127, 255",
-  "75, 0, 130",
-  "143, 0, 255",
 ];
 
 const POKEMON_NAMES = [
@@ -133,7 +90,6 @@ const POKEMON_NAMES = [
 ];
 
 const POKEMON_TYPES = ["eletrico", "agua", "fogo", "grama", "pedra", "psiquico", "gelo", "voador"];
-
 const POKEMON_ABILITIES = [
   "choque rapido",
   "onda d'agua",
@@ -145,6 +101,7 @@ const POKEMON_ABILITIES = [
   "raio prismico",
 ];
 
+const GENERIC_NAMES = ["Alpha", "Beta", "Gamma", "Delta", "Sigma", "Atlas", "Nexus", "Pulse"];
 const GENERIC_CATEGORIES = ["Premium", "Essencial", "Operacional", "Estrategico"];
 const GENERIC_CLIMATES = ["temperado", "arido", "oceanico", "glacial"];
 const GENERIC_SEGMENTS = ["SaaS", "Educacao", "Financas", "Logistica"];
@@ -179,6 +136,15 @@ function pluralize(word: string) {
   return `${word}s`;
 }
 
+function titleCase(input: string) {
+  return input
+    .toLowerCase()
+    .split(/[\s_-]+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
 function extractTopic(prompt: string) {
   const normalized = normalizeText(prompt);
   const words = normalized
@@ -198,6 +164,8 @@ function extractTopic(prompt: string) {
           "exemplos",
           "itens",
           "com",
+          "contendo",
+          "campos",
           "para",
           "uma",
           "umas",
@@ -205,10 +173,8 @@ function extractTopic(prompt: string) {
           "dos",
           "das",
           "que",
-          "cores",
-          "cor",
-          "arco",
-          "iris",
+          "de",
+          "do",
         ].includes(word),
     );
 
@@ -216,57 +182,100 @@ function extractTopic(prompt: string) {
 }
 
 function inferPreset(prompt: string) {
-  const detectedPreset = ENTITY_PRESETS.find((preset) => preset.match.test(prompt));
+  return ENTITY_PRESETS.find((preset) => preset.match.test(prompt)) ?? null;
+}
 
-  if (detectedPreset) {
-    return detectedPreset;
-  }
+function inferEntity(prompt: string, preset: EntityPreset | null) {
+  if (preset) return preset.entity;
+  return pluralize(singularize(extractTopic(prompt)));
+}
 
-  const topic = singularize(extractTopic(prompt));
-  return {
-    entity: pluralize(topic),
-    fields: [
-      { key: "id", type: "number" as const },
-      { key: "nome", type: "string" as const },
-      { key: "categoria", type: "string" as const },
-      { key: "descricao", type: "string" as const },
-      { key: "ativo", type: "boolean" as const },
-    ],
+function normalizeFieldKey(rawField: string) {
+  const normalized = normalizeText(rawField)
+    .replace(/[^a-z0-9\s]/g, " ")
+    .trim();
+
+  const aliases: Record<string, string> = {
+    name: "nome",
+    nome: "nome",
+    titulo: "titulo",
+    title: "titulo",
+    tipo: "tipo",
+    habilidade: "habilidade",
+    abilities: "habilidade",
+    ability: "habilidade",
+    preco: "preco",
+    price: "preco",
+    valor: "preco",
+    email: "email",
+    e_mail: "email",
+    hex: "hex",
+    rgb: "rgb",
+    cor: "nome",
+    cor_nome: "nome",
+    clima: "clima",
+    local: "local",
+    data: "data",
+    segmento: "segmento",
+    descricao: "descricao",
+    description: "descricao",
+    estoque: "emEstoque",
+    em_estoque: "emEstoque",
+    ativo: "ativo",
+    habitavel: "habitavel",
+    fundada: "fundadaEm",
+    fundacao: "fundadaEm",
+    criado: "criadoEm",
+    criado_em: "criadoEm",
   };
+
+  const collapsed = normalized.replace(/\s+/g, "_");
+  return aliases[collapsed] ?? aliases[normalized] ?? collapsed;
 }
 
-function titleCase(input: string) {
-  return input
-    .toLowerCase()
-    .split(/[\s_-]+/)
+function inferFieldType(key: string): FieldType {
+  if (/^(preco|ordem|quantidade|total|funcionarios|diametrokm|id)$/i.test(key)) {
+    return "number";
+  }
+
+  if (/^(ativo|emestoque|emeestoque|habitavel|confirmado|evolui)$/i.test(key.replace(/[^a-z]/gi, ""))) {
+    return "boolean";
+  }
+
+  if (/(data|fundadaem|criadoem)$/i.test(key)) {
+    return "date";
+  }
+
+  return "string";
+}
+
+function inferRequestedFields(prompt: string) {
+  const match = prompt.match(
+    /(?:com|contendo|incluindo|campos?|atributos?)\s+(.+)$/i,
+  );
+
+  if (!match) return [];
+
+  const raw = match[1]
+    .split(/[.;]/)[0]
+    .replace(/\be\b/gi, ",");
+
+  const fields = raw
+    .split(",")
+    .map((part) => part.trim())
     .filter(Boolean)
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ");
+    .map(normalizeFieldKey)
+    .filter((value, index, array) => value && array.indexOf(value) === index)
+    .map((key) => ({ key, type: inferFieldType(key) }));
+
+  return fields;
 }
 
-function buildPromptTopic(prompt: string) {
-  return prompt
-    .split(/\s+/)
-    .filter((word) => normalizeText(word).length > 3)
-    .slice(0, 2)
-    .map((word) => titleCase(normalizeText(word)))
-    .join(" ");
-}
-
-function buildColorString(seed: number, key: string) {
-  if (/nome/i.test(key)) {
-    return COLOR_NAMES[seed % COLOR_NAMES.length];
-  }
-
-  if (/hex/i.test(key)) {
-    return COLOR_HEXES[seed % COLOR_HEXES.length];
-  }
-
-  if (/rgb/i.test(key)) {
-    return COLOR_RGB_VALUES[seed % COLOR_RGB_VALUES.length];
-  }
-
-  return COLOR_NAMES[seed % COLOR_NAMES.length];
+function shouldReturnPrimitiveList(prompt: string, preset: EntityPreset | null, fields: FieldDefinition[]) {
+  if (!preset?.listValues) return false;
+  if (fields.length > 1) return false;
+  const normalized = normalizeText(prompt);
+  return /lista/.test(normalized) && !/(com|contendo|incluindo|campos?|atributos?)/.test(normalized);
 }
 
 function buildTopicLabel(prompt: string, entity: string) {
@@ -279,87 +288,43 @@ function buildTopicLabel(prompt: string, entity: string) {
 }
 
 function buildString(seed: number, key: string, prompt: string, entity: string) {
-  const promptTopic = buildPromptTopic(prompt);
   const topicLabel = buildTopicLabel(prompt, entity);
 
-  if (entity === "cores") {
-    return buildColorString(seed, key);
-  }
-
   if (entity === "pokemons") {
-    if (/nome/i.test(key)) {
-      return POKEMON_NAMES[seed % POKEMON_NAMES.length];
-    }
-
-    if (/tipo/i.test(key)) {
-      return POKEMON_TYPES[seed % POKEMON_TYPES.length];
-    }
-
-    if (/habilidade/i.test(key)) {
-      return POKEMON_ABILITIES[seed % POKEMON_ABILITIES.length];
-    }
+    if (/nome/i.test(key)) return POKEMON_NAMES[seed % POKEMON_NAMES.length];
+    if (/tipo/i.test(key)) return POKEMON_TYPES[seed % POKEMON_TYPES.length];
+    if (/habilidade/i.test(key)) return POKEMON_ABILITIES[seed % POKEMON_ABILITIES.length];
   }
 
-  if (/email/i.test(key)) {
-    return `contato${seed + 1}@exemplo.dev`;
+  if (/email/i.test(key)) return `contato${seed + 1}@exemplo.dev`;
+  if (/hex/i.test(key)) {
+    const values = ["#FF0000", "#FF7F00", "#FFFF00", "#00A651", "#007FFF", "#4B0082", "#8F00FF"];
+    return values[seed % values.length];
   }
-
-  if (/categoria/i.test(key)) {
-    return GENERIC_CATEGORIES[seed % GENERIC_CATEGORIES.length];
+  if (/rgb/i.test(key)) {
+    const values = ["255, 0, 0", "255, 127, 0", "255, 255, 0", "0, 166, 81", "0, 127, 255", "75, 0, 130", "143, 0, 255"];
+    return values[seed % values.length];
   }
+  if (/categoria/i.test(key)) return GENERIC_CATEGORIES[seed % GENERIC_CATEGORIES.length];
+  if (/clima/i.test(key)) return GENERIC_CLIMATES[seed % GENERIC_CLIMATES.length];
+  if (/segmento/i.test(key)) return GENERIC_SEGMENTS[seed % GENERIC_SEGMENTS.length];
+  if (/local/i.test(key)) return GENERIC_LOCATIONS[seed % GENERIC_LOCATIONS.length];
+  if (/descricao/i.test(key)) return `${topicLabel} relacionado ao pedido informado`;
+  if (/nome|titulo/i.test(key)) return `${topicLabel} ${seed + 1}`;
 
-  if (/clima/i.test(key)) {
-    return GENERIC_CLIMATES[seed % GENERIC_CLIMATES.length];
-  }
-
-  if (/segmento/i.test(key)) {
-    return GENERIC_SEGMENTS[seed % GENERIC_SEGMENTS.length];
-  }
-
-  if (/local/i.test(key)) {
-    return GENERIC_LOCATIONS[seed % GENERIC_LOCATIONS.length];
-  }
-
-  if (/descricao/i.test(key)) {
-    return promptTopic
-      ? `${topicLabel} relacionado a ${promptTopic}`
-      : `${topicLabel} gerado a partir da instrucao informada`;
-  }
-
-  if (/nome|titulo/i.test(key)) {
-    return promptTopic
-      ? `${topicLabel} ${seed + 1} - ${promptTopic}`
-      : `${topicLabel} ${seed + 1}`;
-  }
-
-  return promptTopic ? `${topicLabel} ${promptTopic}` : topicLabel;
+  return `${titleCase(key)} ${seed + 1} de ${topicLabel}`;
 }
 
 function buildNumber(seed: number, key: string) {
-  if (/ordem/i.test(key)) {
-    return seed + 1;
-  }
-
-  if (/preco/i.test(key)) {
-    return Number((49.9 + seed * 17.35).toFixed(2));
-  }
-
-  if (/diametro/i.test(key)) {
-    return 4000 + seed * 850;
-  }
-
-  if (/funcionarios/i.test(key)) {
-    return 12 + seed * 8;
-  }
-
+  if (/preco/i.test(key)) return Number((49.9 + seed * 17.35).toFixed(2));
+  if (/diametro/i.test(key)) return 4000 + seed * 850;
+  if (/funcionarios/i.test(key)) return 12 + seed * 8;
+  if (/ordem/i.test(key)) return seed + 1;
   return seed + 1;
 }
 
 function buildBoolean(seed: number, key: string) {
-  if (/evolui/i.test(key)) {
-    return seed % 3 !== 0;
-  }
-
+  if (/evolui/i.test(key)) return seed % 3 !== 0;
   return seed % 2 === 0;
 }
 
@@ -398,11 +363,19 @@ function buildItem(fields: FieldDefinition[], index: number, prompt: string, ent
 export function generateJsonFromPrompt(prompt: string) {
   const cleanPrompt = prompt.trim();
   const preset = inferPreset(cleanPrompt);
+  const entity = inferEntity(cleanPrompt, preset);
+  const requestedFields = inferRequestedFields(cleanPrompt);
+  const fields =
+    requestedFields.length > 0
+      ? requestedFields
+      : preset?.defaultFields ?? [{ key: "nome", type: "string" as const }];
+
   const requestedCount = inferCount(cleanPrompt);
-  const count = preset.entity === "cores" ? Math.min(requestedCount, COLOR_NAMES.length) : requestedCount;
-  const items = Array.from({ length: count }, (_, index) =>
-    buildItem(preset.fields, index, cleanPrompt, preset.entity),
-  );
+  const count = preset?.listValues ? Math.min(requestedCount, preset.listValues.length) : requestedCount;
+
+  const items: JsonValue[] = shouldReturnPrimitiveList(cleanPrompt, preset, fields)
+    ? (preset?.listValues?.slice(0, count) ?? [])
+    : Array.from({ length: count }, (_, index) => buildItem(fields, index, cleanPrompt, entity));
 
   return {
     success: true,
@@ -410,12 +383,12 @@ export function generateJsonFromPrompt(prompt: string) {
     prompt: cleanPrompt,
     generatedAt: new Date().toISOString(),
     summary: {
-      entity: preset.entity,
+      entity,
       count,
-      fields: preset.fields.map((field) => field.key),
+      fields: fields.map((field) => field.key),
     },
     data: {
-      [preset.entity]: items,
+      [entity]: items,
     },
   };
 }
