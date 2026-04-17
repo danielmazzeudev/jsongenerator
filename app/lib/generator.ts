@@ -97,19 +97,6 @@ const ENTITY_PRESETS: EntityPreset[] = [
   },
 ];
 
-const NAME_BANK = [
-  "Aurora",
-  "Vector",
-  "Pulse",
-  "Atlas",
-  "Nexus",
-  "Solaris",
-  "Brisa",
-  "Orion",
-  "Prisma",
-  "Laguna",
-];
-
 const COLOR_NAMES = [
   "Vermelho",
   "Laranja",
@@ -282,9 +269,18 @@ function buildColorString(seed: number, key: string) {
   return COLOR_NAMES[seed % COLOR_NAMES.length];
 }
 
+function buildTopicLabel(prompt: string, entity: string) {
+  const topic = extractTopic(prompt);
+  if (topic === "registro") {
+    return titleCase(singularize(entity));
+  }
+
+  return titleCase(topic);
+}
+
 function buildString(seed: number, key: string, prompt: string, entity: string) {
   const promptTopic = buildPromptTopic(prompt);
-  const baseName = NAME_BANK[seed % NAME_BANK.length];
+  const topicLabel = buildTopicLabel(prompt, entity);
 
   if (entity === "cores") {
     return buildColorString(seed, key);
@@ -326,11 +322,17 @@ function buildString(seed: number, key: string, prompt: string, entity: string) 
 
   if (/descricao/i.test(key)) {
     return promptTopic
-      ? `${titleCase(entity)} inspirado em ${promptTopic}`
-      : `${titleCase(entity)} de exemplo para interface`;
+      ? `${topicLabel} relacionado a ${promptTopic}`
+      : `${topicLabel} gerado a partir da instrucao informada`;
   }
 
-  return promptTopic ? `${baseName} ${promptTopic}` : `${baseName} ${titleCase(entity)}`;
+  if (/nome|titulo/i.test(key)) {
+    return promptTopic
+      ? `${topicLabel} ${seed + 1} - ${promptTopic}`
+      : `${topicLabel} ${seed + 1}`;
+  }
+
+  return promptTopic ? `${topicLabel} ${promptTopic}` : topicLabel;
 }
 
 function buildNumber(seed: number, key: string) {
